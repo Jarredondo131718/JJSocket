@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="638.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.visualsmic.vshuellassocket.EnrollmentControllerComplet">
+   <children>
+      <HBox layoutY="28.0" prefHeight="59.0" prefWidth="638.0" />
+      <Label alignment="CENTER" layoutX="117.0" layoutY="20.0" text="Inscripción Huella">
+         <font>
+            <Font name="System Bold Italic" size="46.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Label>
+      <HBox layoutY="107.0" prefHeight="22.0" prefWidth="638.0">
+         <children>
+            <TextField fx:id="txtDocumentClient" disable="true" style="-fx-background-color: grey;" text="70118562">
+               <font>
+                  <Font name="Lucida Bright Demibold" size="12.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtNameClient" disable="true" prefHeight="23.0" prefWidth="481.0" style="-fx-background-color: grey;" text="jose">
+               <font>
+                  <Font name="Lucida Bright Demibold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <AnchorPane layoutY="165.0" prefHeight="189.0" prefWidth="638.0">
+         <children>
+            <VBox layoutY="-7.0" prefHeight="207.0" prefWidth="209.0">
+               <children>
+                  <HBox prefHeight="25.0" prefWidth="257.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <RadioButton fx:id="rbtDerecha" mnemonicParsing="false" onAction="#btnManoDerechaEvent" prefHeight="17.0" prefWidth="117.0" text="Derecha">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="gruManos" />
+                                 </toggleGroup>
+                                 <HBox.margin>
+                                    <Insets left="2.0" top="18.0" />
+                                 </HBox.margin>
+                              </RadioButton>
+                              <RadioButton fx:id="rbtIzquirda" mnemonicParsing="false" onAction="#btnManoIzquierdaEvent" prefHeight="17.0" prefWidth="119.0" text="Izquierda">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="gruManos1" />
+                                 </toggleGroup>
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="18.0" />
+                                 </HBox.margin>
+                              </RadioButton>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="3.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <ImageView fx:id="containerImageMano" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../JMV/vshuellas/src/main/resources/img/ManoDerecha.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets left="10.0" top="9.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox layoutX="251.0" layoutY="7.0" prefHeight="200.0" prefWidth="207.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="225.0">
+                     <children>
+                        <HBox prefHeight="25.0" prefWidth="209.0">
+                           <children>
+                              <ComboBox fx:id="cboDedos" onAction="#cboDedosEvent" prefHeight="25.0" prefWidth="203.0" promptText="Seleccione Un Dedo" visibleRowCount="5" />
+                           </children>
+                        </HBox>
+                        <ImageView fx:id="containerImageDedo" fitHeight="159.0" fitWidth="177.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../../../JMV/vshuellas/src/main/resources/img/Indice.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets left="10.0" top="3.0" />
+                           </VBox.margin>
+                        </ImageView>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox layoutX="526.0" layoutY="7.0" prefHeight="153.0" prefWidth="104.0">
+               <children>
+                  <ImageView fx:id="imgHuella" fitHeight="100.0" fitWidth="137.0" opacity="0.61" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../JMV/vshuellas/src/main/resources/img/Huella.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets top="32.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <HBox layoutX="18.0" layoutY="370.0" prefHeight="48.0" prefWidth="587.0">
+         <children>
+            <Button fx:id="btnAceptar" minWidth="80.0" mnemonicParsing="false" onAction="#btnAceptarEvent" style="-fx-background-color: green; -fx-text-fill: white; -fx-background-radius: 5;" text="Aceptar" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+               <HBox.margin>
+                  <Insets left="230.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnCancelar" minWidth="80.0" mnemonicParsing="false" onAction="#btnCancelarEvent" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5;" text="Cancelar" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <Label fx:id="lblNameUser" alignment="TOP_RIGHT" prefHeight="17.0" prefWidth="638.0" text="jose" textFill="#3033fb">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#btnLoginOnAction" style="-fx-background-color: red; -fx-text-fill: white;" text="Login" />
+   </children>
+</AnchorPane>
