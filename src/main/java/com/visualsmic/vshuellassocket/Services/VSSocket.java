@@ -2,20 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Services;
 
-import FIngerUtils.CapturarHuella;
-import Models.Client;
-import Models.User;
+package com.visualsmic.vshuellassocket.Services;
+import  com.visualsmic.vshuellassocket.FIngerUtils.CapturarHuella;
+import  com.visualsmic.vshuellassocket.FIngerUtils.LecturaHuella;
+import com.visualsmic.vshuellassocket.Models.Client;
+import com.visualsmic.vshuellassocket.Models.User;
 
 
-
-
+import java.awt.*;
 import java.io.IOException;
 
 import java.net.URI;
 
 import com.visualsmic.vshuellassocket.App;
+import com.visualsmic.vshuellassocket.FIngerUtils.CapturarHuella;
+import com.visualsmic.vshuellassocket.FIngerUtils.LecturaHuella;
+import com.visualsmic.vshuellassocket.Models.User;
+import com.visualsmic.vshuellassocket.Services.FileManagement;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,8 +39,11 @@ public class VSSocket {
     private Socket SO;
     private final FileManagement FM = new FileManagement();
 
-    public VSSocket() {
-//        FileManagement FM = new FileManagement();
+    private LecturaHuella lecturaHuella = new LecturaHuella();
+
+    private CapturarHuella capturarHuella = new CapturarHuella();
+
+    public VSSocket() throws AWTException {
         this.user = FM.ReadFileConfig();
     }
 
@@ -61,22 +68,30 @@ public class VSSocket {
             System.out.println("Services.VSSocket.ConnectSocket() a conectarme");
             SO.connect();
             System.out.println("Services.VSSocket.ConnectSocket() a me conectane");
-            sendMsg("LoginJava", object);
+            sendMsgSocket("LoginJava", object);
 
             SO.on("Enrollment", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
                     System.out.println("Evento Socket Enrrolement a ObtenerClaseClient "+args[0]);
                     ObtenerClaseClient((JSONObject) args[0]);
-                   // try {
-                       // App.setRoot("frmEnrollment");
-                  //  } catch (IOException e) {
-                 //       System.err.println("Evento Socket Enrrolement "+e.getMessage());
-                        //throw new RuntimeException(e);
-                 //   }
+                    App.getController().ActivarCaptura(false);
+
+                    // capturarHuella.start();
+
                 }
             });
+            SO.on("ConsultaHuella", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    System.out.println("Evento Socket ConsultaHuella a ObtenerClaseClient "+args[0]);
+                    ObtenerClaseClient((JSONObject) args[0]);
+                    lecturaHuella.Iniciar(SO);
+                    System.out.println("Debo iniciar LECTURAHUELLA Modo Consulta ");
+                    //continuar invocar Clase Lectura Huella, simulando imagen xxx.
 
+                }
+            });
         } catch (JSONException ex) {
             System.out.println("Error Services.VSSocket.ConnectSocket()" + ex.getMessage());
             System.out.println("Error Services.VSSocket.ConnectSocket()" + ex.getCause());
@@ -106,7 +121,7 @@ public class VSSocket {
 
     }
 
-    public void sendMsg(String nameEven, JSONObject object) {
+    public  void sendMsgSocket(String nameEven, JSONObject object) {
 
         SO.emit(nameEven, object);
 

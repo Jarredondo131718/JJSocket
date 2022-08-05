@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Services;
+package com.visualsmic.vshuellassocket.Services;
 
-import Models.Client;
-import Models.User;
+import com.visualsmic.vshuellassocket.Models.Client;
+import com.visualsmic.vshuellassocket.Models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 /**
  *
@@ -153,7 +152,7 @@ public class FileManagement {
                     + client.getNameClient() + "," + client.getNombreOficina()
                     + "," + client.getCodigoOficina()+ "," + client.getNameHand()
                     + "," + client.getNameFinger() + "," + client.getImageHuella()
-                    + "," + client.getHuella()+ "," + client.getFormulaAction());
+                    + "," + client.getImageHuella()+ "," + client.getFormulaAction());
         }
     }
 

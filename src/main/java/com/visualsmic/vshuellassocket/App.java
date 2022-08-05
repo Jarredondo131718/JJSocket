@@ -1,8 +1,8 @@
 package com.visualsmic.vshuellassocket;
 
-import Services.VSSocket;
-import Models.User;
-import Services.FileManagement;
+import com.visualsmic.vshuellassocket.Services.VSSocket;
+import com.visualsmic.vshuellassocket.Models.User;
+import com.visualsmic.vshuellassocket.Services.FileManagement;
 
 
 import javafx.application.Application;
@@ -23,7 +23,10 @@ public class App extends Application {
 
     private static Scene scene;
     private static String FrmActual;
-
+    private static FXMLLoader fxmlLoaderActual;
+    public static EnrollmentController getController(){
+        return (EnrollmentController) fxmlLoaderActual.getController();
+    }
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -51,10 +54,11 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FrmActual = fxml;
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        fxmlLoaderActual = fxmlLoader;
         return fxmlLoader.load();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AWTException {
         FrmActual = "frmLogin";
 
         FileManagement FM = new FileManagement();

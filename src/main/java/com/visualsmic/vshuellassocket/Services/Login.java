@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Services;
+package com.visualsmic.vshuellassocket.Services;
 
-import Models.User;
+import com.visualsmic.vshuellassocket.Models.User;
 import com.visualsmic.vshuellassocket.App;
-import javafx.scene.control.Alert;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -1,21 +1,20 @@
-package FIngerUtils;
+package com.visualsmic.vshuellassocket.FIngerUtils;
 
-import Models.Client;
-import Services.FileManagement;
-import Services.VSConsumeRest;
+import com.visualsmic.vshuellassocket.App;
+import com.visualsmic.vshuellassocket.Models.Client;
+import com.visualsmic.vshuellassocket.Services.FileManagement;
+import com.visualsmic.vshuellassocket.Services.VSConsumeRest;
 import com.digitalpersona.onetouch.*;
 import com.digitalpersona.onetouch.capture.DPFPCapture;
 import com.digitalpersona.onetouch.capture.event.*;
 import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
-import com.google.gson.Gson;
 import com.visualsmic.vshuellassocket.EnrollmentController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -138,13 +137,10 @@ public class CapturarHuella {
 
     private void setTexto(String texto) {
         this.texto = texto;
-        EnrollmentController.displayMessage(texto);//asi funciona cuando el metodo tiene static, si lo quito me da error aca
-        /*if (Notifiacion.getLineCount() > 3) {
-            Notifiacion.setText("");
-            Notifiacion.append(texto + "\n");
-        } else {
-            Notifiacion.append(texto + "\n");
-        }*/
+        String StatusCapture = getStatusCapture();
+        if(StatusCapture==null) StatusCapture = "";
+        EnrollmentController enrollmentController = App.getController();
+        enrollmentController.displayMessage(texto+ " "+ StatusCapture);
     }
 
 
@@ -160,9 +156,9 @@ public class CapturarHuella {
                 setStatusCapture();
                 updateFingerWS();
             } catch (DPFPImageQualityException | IOException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.err.println("ProcesarCaptura ,Error: " + e.getMessage());
             } finally {
-                System.out.println("estoy en finally "+reclutador.getTemplateStatus());
+                System.out.println("ProcesarCaptura,estoy en finally "+reclutador.getTemplateStatus());
                 setStatusCapture();
                 System.out.println("estado = " + getStatusCapture());
                 switch (reclutador.getTemplateStatus()) {
@@ -170,7 +166,7 @@ public class CapturarHuella {
                         System.out.println("TEMPLATE_STATUS_READY");
                         stop();
                         setTemplate(reclutador.getTemplate());
-                        setTexto("La plantilla ha sido creada ya puede identificarla");
+                        setTexto("La Huella ha sido creada, ya puede Guardarla");
                         setStatusCapture();
                         guardarHuella();
                         break;
@@ -213,7 +209,8 @@ public class CapturarHuella {
 
 
         client.setImageHuella(getEncodeImage(getImageHuella()));
-System.out.println("updateFingerWS Cliente "+client);
+//System.out.println("updateFingerWS Cliente 1 "+client.getImageHuella());
+     //   System.out.println("updateFingerWS Cliente 2 "+getEncodeImage(getImageHuella()));
        // String object = new Gson().toJson(client);
 //        System.out.println(object);
         VSConsumeRest vsConsumeRest = new VSConsumeRest();
@@ -271,8 +268,12 @@ System.out.println("updateFingerWS Cliente "+client);
 
         client.setHuella(encodeString);
         client.setImageHuella(getEncodeImage(getImageHuella()));
+
+        System.out.println("updateFingerWS Cliente  getHuella 1 "+client.getHuella());
+        System.out.println("updateFingerWS Cliente getImageHuella 2 "+client.getImageHuella());
        // Gson gson = new Gson();
 //        System.out.println("CapturaHuella guardarHuella json  " + json);
+        FM.GenerarFileClient(client);
         procesarHuellaDB(client);
 
         stop();
@@ -282,16 +283,25 @@ System.out.println("updateFingerWS Cliente "+client);
 
     }
 
-    private void procesarHuellaDB(Client client) {
-        System.out.println("procesarHuellaDB "+client);
-        VSConsumeRest vsConsumeRest = new VSConsumeRest();
+    private void procesarHuellaDB(Client client) throws IOException {
+        //Jose Agosto 4 Agregue este parche, raro BEGIN
+       // client.setImageHuella(client.getHuella());
+        FileManagement FM = new FileManagement();
+        FM.GenerarFileClient(client);
+        //Jose Agosto 4 Agregue este parche, raro END
+
+
+      //  System.out.println("procesarHuellaDB getImageHuella "+client.getImageHuella());
+     //   System.out.println("procesarHuellaDB getHuella "+client.getHuella());
+        App.getController().ActivarCaptura(true);
+        //VSConsumeRest vsConsumeRest = new VSConsumeRest();
         //Manipular clie e invocar consumo
         //vsConsumeRest.ReturnServices(client);
     }
 
     public void start() {
         lector.startCapture();
-        setTexto("Utilizando el lector de huella dactilar");
+        setTexto("El lector de huella dactilar Esta Listo, Presione Capturar");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

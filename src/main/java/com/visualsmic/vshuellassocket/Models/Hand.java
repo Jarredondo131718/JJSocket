@@ -1,4 +1,4 @@
-package Models;
+package com.visualsmic.vshuellassocket.Models;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
-package Controllers;
+package com.visualsmic.vshuellassocket.Controllers;
 
-import Models.Hand;
+import com.visualsmic.vshuellassocket.Models.Hand;
 import javafx.util.StringConverter;
 
 public class HandConvert extends StringConverter<Hand> {

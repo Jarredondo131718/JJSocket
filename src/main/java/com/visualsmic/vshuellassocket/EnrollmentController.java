@@ -1,19 +1,19 @@
 package com.visualsmic.vshuellassocket;
 
-import FIngerUtils.CapturarHuella;
-import javafx.geometry.Insets;
-import Models.Client;
-import Models.User;
-import Models.Hand;
-import Controllers.HandConvert;
-import Services.FileManagement;
+import com.visualsmic.vshuellassocket.FIngerUtils.CapturarHuella;
+import com.visualsmic.vshuellassocket.Helper.ParameterUtils;
+import com.visualsmic.vshuellassocket.Services.VSConsumeRest;
+import javafx.application.Platform;
+import com.visualsmic.vshuellassocket.Models.Client;
+import com.visualsmic.vshuellassocket.Models.User;
+import com.visualsmic.vshuellassocket.Models.Hand;
+import com.visualsmic.vshuellassocket.Controllers.HandConvert;
+import com.visualsmic.vshuellassocket.Services.FileManagement;
 import com.digitalpersona.onetouch.capture.DPFPCapture;
 import com.digitalpersona.onetouch.capture._impl.DPFPCaptureFactoryImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,14 +23,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import com.digitalpersona.onetouch.*;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import org.json.JSONObject;
 
 public class EnrollmentController implements Initializable {
     Client client;
@@ -44,7 +44,7 @@ public class EnrollmentController implements Initializable {
     private Button btnIniciar;
 
     @FXML
-    private Button btnCancelar;
+    private Button btnGuardar;
 
     @FXML
     private ComboBox<Hand> cboDedos;
@@ -82,7 +82,7 @@ public class EnrollmentController implements Initializable {
     public EnrollmentController() throws AWTException {
     }
     @FXML
-    private    Label lblMessage ;
+    private  Label lblMessageProcesos ;
 
     @FXML
     private AnchorPane containerMessage;
@@ -100,20 +100,55 @@ public class EnrollmentController implements Initializable {
         txtDocumentClient.setText(client.getNitClient());
         txtNameClient.setText(client.getNameClient());
         huella.Iniciar();
+        btnIniciar.setDisable(true);
+        lblMessageProcesos.setText("");
+        lblMessageProcesos.setFocusTraversable(true);
         
 
     }
-
     @FXML
-    void btnCancelarEvent(ActionEvent event) {
+    void btnGuardarEvent(ActionEvent event) {
+        displayMessage("Procesando Petición, Espere Un Momento");
+        btnGuardar.setDisable(true);
+        VSConsumeRest HR = new VSConsumeRest();
 
+        //System.out.println("procesarHuellaDB getImageHuella "+client.getImageHuella());
+        //System.out.println("procesarHuellaDB getHuella "+client.getHuella());
+        //System.out.println("aqui guardo"+client);
+        ParameterUtils PU = new ParameterUtils();
+        JSONObject RS = HR.ReturnServices( PU.ParameterDBEnrroll());
+        System.out.println("btnGuardarEvent "+RS);
+
+        if(RS == null){
+            displayMessage("Hubo Un Problema Al Guardar La Huella");
+        }else{
+            displayMessage("Operación Exitosa");
+            ClearMessage(10000);
+
+        }
+    }
+    public  void ClearMessage(int TimeSegundos ){
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask()
+        {
+            public void run()
+            {
+              displayMessage("");
+            }
+        };
+
+        try {
+            timer.schedule(task, TimeSegundos);
+        }catch (Exception e){
+            System.err.println("Error "+e.getMessage());
+        }
     }
 
     @FXML
     void btnManoDerechaEvent(ActionEvent event) {
         rbtDerecha.setSelected(true);
         rbtIzquirda.setSelected(false);
-        client.setNameHand("ManoDerecha");
+        if(client != null) client.setNameHand("ManoDerecha");
         displayImageSelected( "ManoDerecha.png","Mano");
     }
 
@@ -121,7 +156,7 @@ public class EnrollmentController implements Initializable {
     void btnManoIzquierdaEvent(ActionEvent event) {
         rbtDerecha.setSelected(false);
         rbtIzquirda.setSelected(true);
-        client.setNameHand("ManoIzquierda");
+        if(client != null) client.setNameHand("ManoIzquierda");
         displayImageSelected( "ManoIzquierda.png","Mano");
     }
     static Label errorLabel = new Label();
@@ -151,15 +186,22 @@ public class EnrollmentController implements Initializable {
         a.setAlertType(AlertType.ERROR);
         a.show();
     }
-    public static void displayMessage(String Message) {
-//este es el error , si quito el static me da error al invocar
+    public void displayMessage(String Message) {
+        try {
+            // System.out.println("displayMessage "+Message);
+            Platform.runLater(() -> lblMessageProcesos.setText(Message));
+            lblMessageProcesos.setFocusTraversable(true);
+        }catch (Exception e){
+            MostrarAlertaBorrar("Error","APP,displayMessage: Error al Mostrar Mensaje ");
+            System.err.println("APP,displayMessage: Error al Mostrar Mensaje ");
+        }
 
-          //  lblMessage.setText(Message);
 
-
-
-        errorLabel.setText(Message);
-        System.out.println("displayMessage Saliendo "+Message);
+    }
+    public void  ActivarCaptura(boolean Activar){
+        if(!Activar) huella.start();
+        btnIniciar.setDisable(Activar);
+        btnGuardar.setDisable(!Activar);
     }
 
     @Override
@@ -178,8 +220,9 @@ public class EnrollmentController implements Initializable {
         lblNameUser.setText(user.getNombreUsuario());
         txtDocumentClient.setText("");
         txtNameClient.setText("");
-
-        huella.start();
+        btnIniciar.setDisable(true);
+        btnGuardar.setDisable(true);
+       // huella.start(); Agosto 4
 
     }
 

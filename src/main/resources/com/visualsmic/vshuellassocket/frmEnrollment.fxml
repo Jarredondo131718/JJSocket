@@ -122,7 +122,7 @@
       </AnchorPane>
       <HBox layoutX="18.0" layoutY="370.0" prefHeight="48.0" prefWidth="587.0">
          <children>
-            <Button fx:id="btnIniciar" minWidth="80.0" mnemonicParsing="false" onAction="#btnIniciarEvent" style="-fx-background-color: green; -fx-text-fill: white; -fx-background-radius: 5;" text="Capture" textFill="WHITE">
+            <Button fx:id="btnIniciar" disable="true" minWidth="80.0" mnemonicParsing="false" onAction="#btnIniciarEvent" style="-fx-background-color: green; -fx-text-fill: white; -fx-background-radius: 5;" text="Capture" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -133,7 +133,7 @@
                   <Insets left="230.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnCancelar" minWidth="80.0" mnemonicParsing="false" onAction="#btnCancelarEvent" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5;" text="Cancelar" textFill="WHITE">
+            <Button fx:id="btnGuardar" disable="true" minWidth="80.0" mnemonicParsing="false" onAction="#btnGuardarEvent" style="-fx-background-color: blue; -fx-text-fill: white; -fx-background-radius: 5;" text="Guardar" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -152,9 +152,9 @@
          </font>
       </Label>
       <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#btnLoginOnAction" style="-fx-background-color: red; -fx-text-fill: white;" text="Login" />
-      <AnchorPane fx:id="containerMessage" layoutX="17.0" layoutY="403.0" prefHeight="48.0" prefWidth="618.0">
+      <AnchorPane fx:id="containerMessage" layoutX="17.0" layoutY="412.0" prefHeight="35.0" prefWidth="618.0">
          <children>
-            <Label fx:id="lblMessage" prefHeight="17.0" prefWidth="497.0" text="messages" />
+            <Label fx:id="lblMessageProcesos" layoutY="7.0" prefHeight="17.0" prefWidth="587.0" style="-fx-background-color: blue;" text="Sensor No Activado" textFill="#fdfdfd" />
          </children>
       </AnchorPane>
    </children>
